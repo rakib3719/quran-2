@@ -127,7 +127,7 @@ export default function Render({ mode, id, settings, bookmarks, onToggleBookmark
   };
 
   return (
-    <main className="flex-1 bg-[#07090d] text-[#e4e7eb] overflow-y-auto">
+    <main className="flex-1 bg-[#0d0d0d] text-[#e4e7eb] overflow-y-auto">
       {currentSurah ? (
         <div className="text-center py-12 border-b border-[#1e222a]">
           <h2 className="text-4xl font-semibold">Surah {currentSurah.englishName.replace("-", " ")}</h2>

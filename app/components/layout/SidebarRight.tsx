@@ -52,7 +52,7 @@ export default function SidebarRight({ mode, selectedId, onModeChange }: Props) 
   }, [query]);
 
   return (
-    <aside className="w-full md:w-[335px] shrink-0 border-r border-[#1f222a] bg-[#090b0f] text-white overflow-y-auto">
+    <aside className="w-full md:w-[335px] shrink-0 border-r border-[#1f222a] bg-[#0d0d0d] text-white overflow-y-auto">
       <div className="p-5 border-b border-[#1b1f26]">
         <h1 className="text-[40px] leading-none font-bold tracking-tight text-[#dbdde2]">Quran Mazid</h1>
         <p className="text-[#6f7580] text-sm mt-1">Read, Study, and Learn The Quran</p>

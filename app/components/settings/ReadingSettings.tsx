@@ -11,7 +11,7 @@ export default function ReadingSettings({ settings, onChange }: Props) {
   return (
     <aside className="hidden xl:block w-[360px] shrink-0 border-l border-[#1f222a] bg-[#090b0f] text-white overflow-y-auto">
       <div className="p-6 border-b border-[#1c2027]">
-        <div className="h-11 rounded-full bg-[#151920] p-1 grid grid-cols-2 gap-1 text-lg">
+        <div className="h-11 rounded-full bg-[#0d0d0d] p-1 grid grid-cols-2 gap-1 text-lg">
           <button
             onClick={() => onChange({ ...settings, contentMode: "translation" })}
             className={`rounded-full transition-colors ${

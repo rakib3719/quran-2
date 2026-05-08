@@ -4,7 +4,7 @@ const menuItems = ["Home", "Grid", "Explore", "Bookmark", "Apps"];
 
 export default function SidebarLeft() {
   return (
-    <aside className="hidden md:flex w-16 shrink-0 flex-col items-center bg-[#121418] border-r border-[#1f222a] py-4 gap-8">
+    <aside className="hidden md:flex w-16 shrink-0 flex-col items-center bg-[#0d0d0d] border-r border-[#1f222a] py-4 gap-8">
       <div className="h-10 w-10 rounded-xl bg-[#4b9b47] grid place-items-center text-white font-bold text-lg">
         Q
       </div>

@@ -75,7 +75,7 @@ export default function Home() {
   };
 
   return (
-    <div className="h-screen bg-[#07090d] text-white flex overflow-hidden">
+    <div className="h-screen bg-[#0d0d0d] text-white flex overflow-hidden">
       <SidebarLeft />
 
       <SidebarRight mode={mode} selectedId={id} onModeChange={onModeChange} />
