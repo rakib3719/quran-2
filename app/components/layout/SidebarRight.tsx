@@ -86,7 +86,7 @@ export default function SidebarRight({
     >
       {/* Fixed Top */}
       <div className="shrink-0">
-        <div className="p-5 border-b border-[#1b1f26]">
+        {/* <div className="p-5 border-b border-[#1b1f26]">
           <h1 className="text-[40px] leading-none font-bold tracking-tight text-[#dbdde2]">
             Quran Mazid
           </h1>
@@ -94,7 +94,7 @@ export default function SidebarRight({
           <p className="text-[#6f7580] text-sm mt-1">
             Read, Study, and Learn The Quran
           </p>
-        </div>
+        </div> */}
 
         <div className="p-5 pb-4">
           <div className="bg-[#161a20] rounded-full p-1 grid grid-cols-3 gap-1 text-sm mb-4">
@@ -148,20 +148,33 @@ export default function SidebarRight({
                   : "bg-[#0b0d11] border-[#21262f] hover:border-[#35563f]"
               }`}
             >
+
+              
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-lg font-semibold">
+               <section className="flex  items-center gap-4">
+                 <div className="relative h-8 w-8 shrink-0">
+  {/* Rotated Background */}
+  <div className="absolute inset-0 rotate-45 rounded bg-[#428038]" />
+
+  {/* Number */}
+  <div className="relative z-10 flex h-full w-full items-center justify-center text-white text-sm font-medium">
+    {surah.number}
+  </div>
+</div>
+                 <div>
+                   <p className="text-[15px] font-semibold">
                     {surah.englishName.replace("-", " ")}
                   </p>
 
-                  <p className="text-[#7d8490]">
+                  <p className="text-[#7d8490] text-[13px]">
                     {surah.englishNameTranslation}
                   </p>
+                 </div>
+               </section>
                 </div>
 
-                <p className="text-[#89909c] text-lg">
-                  {surah.number}
-                </p>
+              
               </div>
             </button>
           ))}
