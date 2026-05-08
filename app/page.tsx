@@ -6,6 +6,7 @@ import SidebarLeft from "./components/layout/SidebarLeft";
 import SidebarRight from "./components/layout/SidebarRight";
 import ReadingSettings from "./components/settings/ReadingSettings";
 import { BookmarkItem, ReadingSettingsState, ReaderMode } from "@/types/reader";
+import Topbar from "./components/layout/Topbar";
 
 const SETTINGS_KEY = "quran-reading-settings";
 const BOOKMARK_KEY = "quran-bookmarks";
@@ -54,14 +55,18 @@ export default function Home() {
     setId(nextId);
   };
 
-  const onToggleBookmark = ({ surahNumber, ayahNumberInSurah }: { surahNumber: number; ayahNumberInSurah: number }) => {
+  const onToggleBookmark = ({
+    surahNumber,
+    ayahNumberInSurah,
+  }: {
+    surahNumber: number;
+    ayahNumberInSurah: number;
+  }) => {
     const key = `${surahNumber}:${ayahNumberInSurah}`;
-
     setBookmarks((current) => {
       if (current.some((item) => item.key === key)) {
         return current.filter((item) => item.key !== key);
       }
-
       return [
         ...current,
         {
@@ -75,20 +80,30 @@ export default function Home() {
   };
 
   return (
-    <div className="h-screen bg-[#07090d] text-white flex overflow-hidden">
-      <SidebarLeft />
+<div className="flex">
 
-      <SidebarRight mode={mode} selectedId={id} onModeChange={onModeChange} />
+  <SidebarLeft/>
+      <div className="h-screen bg-[#0d0d0d] text-white flex flex-col overflow-hidden">
+      {/* Top: full-width topbar */}
+      <Topbar />
 
-      <Render
-        mode={mode}
-        id={id}
-        settings={settings}
-        bookmarks={bookmarks}
-        onToggleBookmark={onToggleBookmark}
-      />
+      {/* Bottom: sidebar + content row */}
+      <div className="flex flex-1 overflow-hidden">
+  
 
-      <ReadingSettings settings={settings} onChange={setSettings} />
+        <SidebarRight mode={mode} selectedId={id} onModeChange={onModeChange} />
+
+        <Render
+          mode={mode}
+          id={id}
+          settings={settings}
+          bookmarks={bookmarks}
+          onToggleBookmark={onToggleBookmark}
+        />
+
+        <ReadingSettings settings={settings} onChange={setSettings} />
+      </div>
     </div>
+</div>
   );
 }

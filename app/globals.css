@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
-:root {
-  --bg: #07090d;
+/* :root {
+  --bg: #0d0d0d;
   --fg: #e7ebf0;
-}
+} */
 
 body {
   background: var(--bg);
@@ -25,4 +25,23 @@ body {
 
 .slider {
   accent-color: #45a851;
+}
+
+/* Custom Quran Sidebar Scrollbar */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0b0d11;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #172415;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2d7d3d;
 }
