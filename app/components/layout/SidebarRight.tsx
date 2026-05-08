@@ -142,10 +142,10 @@ export default function SidebarRight({
               type="button"
               key={surah.number}
               onClick={() => onModeChange("surah", surah.number)}
-              className={`w-full text-left rounded-2xl border p-4 transition-colors ${
+              className={`w-full  text-left rounded-2xl border p-4 transition-colors ${
                 selectedId === surah.number
-                  ? "bg-[#112314] border-[#295331]"
-                  : "bg-[#0b0d11] border-[#21262f] hover:border-[#35563f]"
+                  ? "bg-[#111510] border-[#1f341c]"
+                  : "bg-[#0d0d0d] border-[#1f341c] hover:border-[#35563f] hover:bg-[#111510]"
               }`}
             >
 
@@ -179,49 +179,77 @@ export default function SidebarRight({
             </button>
           ))}
 
-        {mode === "juz" &&
-          filteredJuz.map((item) => (
-            <button
-              type="button"
-              key={item.juz}
-              onClick={() => onModeChange("juz", item.juz)}
-              className={`w-full text-left rounded-2xl border p-4 transition-colors ${
-                selectedId === item.juz
-                  ? "bg-[#112314] border-[#295331]"
-                  : "bg-[#0b0d11] border-[#21262f] hover:border-[#35563f]"
-              }`}
-            >
-              <p className="text-[#42a34f] text-xl font-semibold">
-                Juz {item.juz}
-              </p>
+      {mode === "juz" &&
+  filteredJuz.map((item) => (
+    <button
+      type="button"
+      key={item.juz}
+      onClick={() => onModeChange("juz", item.juz)}
+      className={`w-full text-left rounded-2xl border p-4 transition-colors ${
+        selectedId === item.juz
+          ? "bg-[#111510] border-[#1f341c]"
+          : "bg-[#0d0d0d] border-[#1f341c] hover:border-[#35563f] hover:bg-[#111510]"
+      }`}
+    >
+      <section className="flex items-center gap-4">
+        {/* Diamond */}
+        <div className="relative h-8 w-8 shrink-0">
+          <div className="absolute inset-0 rotate-45 rounded bg-[#428038]" />
 
-              <p className="text-[#7d8490]">
-                {item.first?.englishName ?? "Surah"} & More
-              </p>
+          <div className="relative z-10 flex h-full w-full items-center justify-center text-white text-sm font-medium">
+            {item.juz}
+          </div>
+        </div>
 
-              <p className="text-[#9aa0a9] mt-1">
-                {item.surahCount} Surah
-              </p>
-            </button>
-          ))}
+        {/* Content */}
+        <div>
+          <p className="text-[15px] font-semibold">
+            Juz {item.juz}
+          </p>
 
-        {mode === "page" &&
-          filteredPages.map((pageNumber) => (
-            <button
-              type="button"
-              key={pageNumber}
-              onClick={() => onModeChange("page", pageNumber)}
-              className={`w-full text-left rounded-2xl border p-4 transition-colors ${
-                selectedId === pageNumber
-                  ? "bg-[#112314] border-[#295331]"
-                  : "bg-[#0b0d11] border-[#21262f] hover:border-[#35563f]"
-              }`}
-            >
-              <p className="text-xl font-semibold">
-                Page {String(pageNumber).padStart(2, "0")}
-              </p>
-            </button>
-          ))}
+          <p className="text-[#7d8490] text-[13px]">
+            {item.first?.englishName ?? "Surah"} & More
+          </p>
+        </div>
+      </section>
+    </button>
+  ))}
+
+{mode === "page" &&
+  filteredPages.map((pageNumber) => (
+    <button
+      type="button"
+      key={pageNumber}
+      onClick={() => onModeChange("page", pageNumber)}
+      className={`w-full text-left rounded-2xl border p-4 transition-colors ${
+        selectedId === pageNumber
+          ? "bg-[#111510] border-[#1f341c]"
+          : "bg-[#0d0d0d] border-[#1f341c] hover:border-[#35563f] hover:bg-[#111510]"
+      }`}
+    >
+      <section className="flex items-center gap-4">
+        {/* Diamond */}
+        <div className="relative h-8 w-8 shrink-0">
+          <div className="absolute inset-0 rotate-45 rounded bg-[#428038]" />
+
+          <div className="relative z-10 flex h-full w-full items-center justify-center text-white text-sm font-medium">
+            {pageNumber}
+          </div>
+        </div>
+
+        {/* Content */}
+        <div>
+          <p className="text-[15px] font-semibold">
+            Page {String(pageNumber).padStart(2, "0")}
+          </p>
+
+          <p className="text-[#7d8490] text-[13px]">
+            Quran Page Navigation
+          </p>
+        </div>
+      </section>
+    </button>
+  ))}
       </div>
     </aside>
   );
