@@ -24,7 +24,7 @@ export default function Home() {
         }}
       />
 
-      <Render />
+      <Render mode={mode} id={id} />
     </div>
   );
 }
