@@ -7,23 +7,42 @@ type Props = {
   onChange: (next: ReadingSettingsState) => void;
 };
 
-export default function ReadingSettings({ settings, onChange }: Props) {
+export default function ReadingSettings({
+  settings,
+  onChange,
+}: Props) {
   return (
-    <aside className="hidden xl:block w-[360px] shrink-0 border-l border-[#1f222a] bg-[#090b0f] text-white overflow-y-auto">
-      <div className="p-6 border-b border-[#1c2027]">
-        <div className="h-11 rounded-full bg-[#0d0d0d] p-1 grid grid-cols-2 gap-1 text-lg">
+    <aside className="hidden xl:flex w-[360px] shrink-0 border-l border-[#1f341c] bg-[#0d0d0d] text-white flex-col">
+      {/* Top Tabs */}
+      <div className="p-5 border-b border-[#1b221a] shrink-0">
+        <div className="bg-[#161a20] rounded-full p-1 grid grid-cols-2 gap-1">
           <button
-            onClick={() => onChange({ ...settings, contentMode: "translation" })}
-            className={`rounded-full transition-colors ${
-              settings.contentMode === "translation" ? "bg-[#090b10] font-semibold" : "text-[#818793]"
+            onClick={() =>
+              onChange({
+                ...settings,
+                contentMode: "translation",
+              })
+            }
+            className={`h-11 rounded-full text-[15px] font-medium transition-colors ${
+              settings.contentMode === "translation"
+                ? "bg-[#090b10] text-white"
+                : "text-[#8a9099]"
             }`}
           >
             Translation
           </button>
+
           <button
-            onClick={() => onChange({ ...settings, contentMode: "reading" })}
-            className={`rounded-full transition-colors ${
-              settings.contentMode === "reading" ? "bg-[#090b10] font-semibold" : "text-[#818793]"
+            onClick={() =>
+              onChange({
+                ...settings,
+                contentMode: "reading",
+              })
+            }
+            className={`h-11 rounded-full text-[15px] font-medium transition-colors ${
+              settings.contentMode === "reading"
+                ? "bg-[#090b10] text-white"
+                : "text-[#8a9099]"
             }`}
           >
             Reading
@@ -31,71 +50,150 @@ export default function ReadingSettings({ settings, onChange }: Props) {
         </div>
       </div>
 
-      <div className="p-6 space-y-7">
+      {/* Scrollable Content */}
+      <div
+        className="
+          flex-1
+          overflow-y-auto
+          p-5
+          space-y-6
+
+          scrollbar-thin
+          scrollbar-track-[#0b0d11]
+          scrollbar-thumb-[#1f5f2d]
+        "
+      >
+        {/* Heading */}
         <div>
-          <p className="text-3xl font-semibold text-[#cfd2d8]">Reading Settings</p>
+          <p className="text-[28px] font-bold text-[#e5e7eb]">
+            Reading Settings
+          </p>
+
+          <p className="text-[#7d8490] text-[14px] mt-1">
+            Customize your Quran reading experience
+          </p>
         </div>
 
-        <div>
-          <p className="text-[#45a851] font-semibold text-2xl mb-4">Font Settings</p>
+        {/* Font Settings Card */}
+        <div className="rounded-2xl border border-[#1f341c] bg-[#111510] p-5">
+          <p className="text-[#4fa84f] text-[18px] font-semibold mb-5">
+            Font Settings
+          </p>
 
-          <div className="mb-5">
-            <div className="flex justify-between text-lg mb-2">
-              <p className="text-[#cfd2d8]">Arabic Font Size</p>
-              <p className="text-[#45a851]">{settings.arabicFontSize}</p>
+          {/* Arabic Font Size */}
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-[15px] font-medium text-[#d5d9df]">
+                Arabic Font Size
+              </p>
+
+              <p className="text-[#4fa84f] text-[15px] font-semibold">
+                {settings.arabicFontSize}
+              </p>
             </div>
+
             <input
               type="range"
               min={22}
               max={54}
               value={settings.arabicFontSize}
-              onChange={(e) => onChange({ ...settings, arabicFontSize: Number(e.target.value) })}
+              onChange={(e) =>
+                onChange({
+                  ...settings,
+                  arabicFontSize: Number(e.target.value),
+                })
+              }
               className="slider w-full"
             />
           </div>
 
-          <div className="mb-5">
-            <div className="flex justify-between text-lg mb-2">
-              <p className="text-[#cfd2d8]">Translation Font Size</p>
-              <p className="text-[#45a851]">{settings.translationFontSize}</p>
+          {/* Translation Font Size */}
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-[15px] font-medium text-[#d5d9df]">
+                Translation Font Size
+              </p>
+
+              <p className="text-[#4fa84f] text-[15px] font-semibold">
+                {settings.translationFontSize}
+              </p>
             </div>
+
             <input
               type="range"
               min={13}
               max={30}
               value={settings.translationFontSize}
               onChange={(e) =>
-                onChange({ ...settings, translationFontSize: Number(e.target.value) })
+                onChange({
+                  ...settings,
+                  translationFontSize: Number(e.target.value),
+                })
               }
               className="slider w-full"
             />
           </div>
 
+          {/* Font Face */}
           <div>
-            <p className="text-lg text-[#cfd2d8] mb-2">Arabic Font Face</p>
+            <p className="text-[15px] font-medium text-[#d5d9df] mb-3">
+              Arabic Font Face
+            </p>
+
             <select
               value={settings.arabicFontFace}
               onChange={(e) =>
                 onChange({
                   ...settings,
-                  arabicFontFace: e.target.value as ReadingSettingsState["arabicFontFace"],
+                  arabicFontFace:
+                    e.target.value as ReadingSettingsState["arabicFontFace"],
                 })
               }
-              className="w-full h-12 rounded-xl bg-[#161a20] border border-[#252a32] px-4 text-lg"
+              className="
+                w-full
+                h-12
+                rounded-xl
+                bg-[#161a20]
+                border border-[#252a32]
+                px-4
+                text-[15px]
+                text-white
+                outline-none
+              "
             >
               <option value="kfgq">KFGQ</option>
               <option value="amiri">Amiri</option>
-              <option value="scheherazade">Scheherazade</option>
+              <option value="scheherazade">
+                Scheherazade
+              </option>
             </select>
           </div>
         </div>
 
-        <div className="rounded-2xl border border-[#22452a] bg-[#0f2013] p-5">
-          <p className="text-3xl font-semibold">Help spread the knowledge of Islam</p>
-          <p className="text-[#9ca3af] text-lg mt-3">
-            Your regular support helps us reach our brothers and sisters with Quran learning.
+        {/* Support Card */}
+        <div className="rounded-2xl border border-[#1f341c] bg-[#111510] p-5">
+          <p className="text-[22px] leading-snug font-bold text-white">
+            Help spread the knowledge of Islam
           </p>
-          <button className="mt-4 w-full h-11 rounded-xl bg-[#4c9f45] font-semibold text-lg">
+
+          <p className="text-[#8f96a3] text-[14px] mt-3 leading-6">
+            Your support helps us improve Quran learning
+            for المسلمين around the world.
+          </p>
+
+          <button
+            className="
+              mt-5
+              h-11
+              w-full
+              rounded-xl
+              bg-[#428038]
+              hover:bg-[#4d9442]
+              transition-colors
+              text-[15px]
+              font-semibold
+            "
+          >
             Support Us
           </button>
         </div>
