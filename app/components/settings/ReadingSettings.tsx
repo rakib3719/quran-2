@@ -15,7 +15,7 @@ export default function ReadingSettings({
     <aside className="hidden xl:flex w-[360px] shrink-0 border-l border-[#1f341c] bg-[#0d0d0d] text-white flex-col">
       {/* Top Tabs */}
       <div className="p-5 border-b border-[#1b221a] shrink-0">
-        <div className="bg-[#161a20] rounded-full p-1 grid grid-cols-2 gap-1">
+        <div className="bg-[#171717] rounded-full p-1 grid grid-cols-2 gap-1">
           <button
             onClick={() =>
               onChange({

@@ -97,7 +97,7 @@ export default function SidebarRight({
         </div> */}
 
         <div className="p-5 pb-4">
-          <div className="bg-[#161a20] rounded-full p-1 grid grid-cols-3 gap-1 text-sm mb-4">
+          <div className="bg-[#171717] rounded-full p-1 grid grid-cols-3 gap-1 text-sm mb-4">
             {(["surah", "juz", "page"] as ReaderMode[]).map((item) => (
               <button
                 key={item}
@@ -117,7 +117,7 @@ export default function SidebarRight({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={`Search ${mode}`}
-            className="w-full h-12 rounded-full bg-[#161a20] border border-[#262b33] px-4 text-[#d5d9df] placeholder:text-[#666d76] outline-none"
+            className="w-full h-12 rounded-full bg-[#171717] border border-[#262b33] px-4 text-[#d5d9df] placeholder:text-[#666d76] outline-none"
           />
         </div>
       </div>
