@@ -43,13 +43,13 @@ type Props = {
 
 export default function Topbar({ onSearchClick, onThemeToggle, onSupportClick }: Props) {
   return (
-    <header className="w-full bg-[#0d0d0d] border-b border-[#1a1f27] h-[56px] flex items-center px-5 md:px-7">
+    <header className="w-full bg-[var(--panel)] border-b border-[var(--border-soft)] h-[56px] flex items-center px-5 md:px-7">
       {/* Left: Logo */}
       <div className="flex flex-col justify-center">
-        <span className="text-[#e8eaed] font-bold text-[15px] leading-tight tracking-tight">
+        <span className="text-[var(--fg)] font-bold text-[15px] leading-tight tracking-tight">
           Quran Mazid
         </span>
-        <span className="text-[#5a6270] text-[11px] leading-tight mt-0.5">
+        <span className="text-[var(--text-soft)] text-[11px] leading-tight mt-0.5">
           Read, Study, and Learn The Quran
         </span>
       </div>
@@ -61,7 +61,10 @@ export default function Topbar({ onSearchClick, onThemeToggle, onSupportClick }:
       <div className="flex items-center gap-2">
         {/* Search */}
         <button
-          onClick={onSearchClick}
+          onClick={() => {
+            onSearchClick?.();
+            window.dispatchEvent(new CustomEvent("focus-reader-search"));
+          }}
           className="w-8 h-8 flex items-center justify-center rounded-full text-[#5a6270]
             hover:text-[#a0a8b4] hover:bg-[#1e242e] transition-colors"
           aria-label="Search"

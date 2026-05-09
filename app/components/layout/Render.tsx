@@ -13,6 +13,7 @@ type RenderAyah = {
 type Props = {
   mode: ReaderMode;
   id: number;
+  query: string;
   settings: ReadingSettingsState;
   bookmarks: BookmarkItem[];
   onToggleBookmark: (item: { surahNumber: number; ayahNumberInSurah: number }) => void;
@@ -143,7 +144,7 @@ function ShareIcon() {
   );
 }
 
-export default function Render({ mode, id, settings, bookmarks, onToggleBookmark }: Props) {
+export default function Render({ mode, id, query, settings, bookmarks, onToggleBookmark }: Props) {
   const [activeAudioKey, setActiveAudioKey] = useState<string | null>(null);
   const [tafsirByAyah, setTafsirByAyah] = useState<Record<string, TafsirState>>({});
   const [openMoreKey, setOpenMoreKey] = useState<string | null>(null);
@@ -160,6 +161,16 @@ export default function Render({ mode, id, settings, bookmarks, onToggleBookmark
     }
     return getPage(id).map(({ surah, ayahIndex }) => ({ surah, ayah: surah.ayahs[ayahIndex] }));
   }, [mode, id]);
+
+  const filteredData = useMemo(() => {
+    const term = query.trim().toLowerCase();
+    if (!term) return data;
+    return data.filter(({ surah, ayah }) =>
+      `${surah.number}:${ayah.numberInSurah} ${surah.englishName} ${surah.englishNameTranslation} ${ayah.text} ${ayah.translation?.text ?? ""}`
+        .toLowerCase()
+        .includes(term)
+    );
+  }, [data, query]);
 
   const bookmarkSet = useMemo(() => new Set(bookmarks.map((b) => b.key)), [bookmarks]);
 
@@ -188,7 +199,7 @@ export default function Render({ mode, id, settings, bookmarks, onToggleBookmark
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  const currentSurah = data[0]?.surah;
+  const currentSurah = filteredData[0]?.surah ?? data[0]?.surah;
 
   const handlePlayPause = (item: RenderAyah) => {
     const audio = audioRef.current;
@@ -253,17 +264,17 @@ export default function Render({ mode, id, settings, bookmarks, onToggleBookmark
   };
 
   return (
-    <main className="flex-1 bg-[#0d0d0d] text-[#e4e7eb] overflow-y-auto">
+    <main className="flex-1 bg-[var(--panel)] text-[var(--fg)] overflow-y-auto">
       {currentSurah ? (
         <div className="text-center py-12 border-b border-[#1e222a]">
           <h2 className="text-2xl font-semibold">Surah {currentSurah.englishName.replace("-", " ")}</h2>
-          <p className="mt-2 text-[#7f8692] text-sm">
+          <p className="mt-2 text-[var(--text-soft)] text-sm">
             {currentSurah.numberOfAyahs} Ayahs · {currentSurah.revelationType}
           </p>
         </div>
       ) : null}
 
-      {data.map((item, i) => {
+      {filteredData.map((item, i) => {
         const ayahKey = `${item.surah.number}:${item.ayah.numberInSurah}`;
         const tafsir = tafsirByAyah[ayahKey];
         const isBookmarked = bookmarkSet.has(ayahKey);
@@ -273,7 +284,7 @@ export default function Render({ mode, id, settings, bookmarks, onToggleBookmark
         return (
           <article
             key={`${ayahKey}-${i}`}
-            className="flex border-b border-[#1a1f27]"
+            className="flex border-b border-[var(--border-soft)]"
           >
             {/* Left icon sidebar */}
             <div className="flex flex-col items-center gap-1 pt-10 pb-6 px-3 w-[52px] shrink-0">
@@ -289,7 +300,7 @@ export default function Render({ mode, id, settings, bookmarks, onToggleBookmark
                   className={`w-8 h-8 flex items-center justify-center rounded-full transition-colors
                     ${isPlaying
                       ? "text-[#42a34f] bg-[#42a34f1a]"
-                      : "text-[#5c6470] hover:text-[#42a34f] hover:bg-[#42a34f12]"
+                      : "text-[var(--icon-muted)] hover:text-[#42a34f] hover:bg-[#42a34f12]"
                     }`}
                   aria-label={isPlaying ? "Pause" : "Play"}
                 >
@@ -304,7 +315,7 @@ export default function Render({ mode, id, settings, bookmarks, onToggleBookmark
                   className={`w-8 h-8 flex items-center justify-center rounded-full transition-colors
                     ${tafsir?.open
                       ? "text-[#42a34f] bg-[#42a34f1a]"
-                      : "text-[#5c6470] hover:text-[#42a34f] hover:bg-[#42a34f12]"
+                      : "text-[var(--icon-muted)] hover:text-[#42a34f] hover:bg-[#42a34f12]"
                     }`}
                   aria-label="Tafsir"
                 >
@@ -324,7 +335,7 @@ export default function Render({ mode, id, settings, bookmarks, onToggleBookmark
                   className={`w-8 h-8 flex items-center justify-center rounded-full transition-colors
                     ${isBookmarked
                       ? "text-[#42a34f] bg-[#42a34f1a]"
-                      : "text-[#5c6470] hover:text-[#42a34f] hover:bg-[#42a34f12]"
+                      : "text-[var(--icon-muted)] hover:text-[#42a34f] hover:bg-[#42a34f12]"
                     }`}
                   aria-label={isBookmarked ? "Remove Bookmark" : "Bookmark"}
                 >
@@ -340,7 +351,7 @@ export default function Render({ mode, id, settings, bookmarks, onToggleBookmark
                     className={`w-8 h-8 flex items-center justify-center rounded-full transition-colors
                       ${isMoreOpen
                         ? "text-[#42a34f] bg-[#42a34f1a]"
-                        : "text-[#5c6470] hover:text-[#42a34f] hover:bg-[#42a34f12]"
+                        : "text-[var(--icon-muted)] hover:text-[#42a34f] hover:bg-[#42a34f12]"
                       }`}
                     aria-label="More options"
                   >
@@ -396,8 +407,8 @@ export default function Render({ mode, id, settings, bookmarks, onToggleBookmark
 
               {settings.contentMode === "translation" ? (
                 <div className="mt-6">
-                  <p className="text-[#6f7783] uppercase tracking-[0.08em] text-xs">Saheeh International</p>
-                  <p className="mt-2 text-[#d4d9df]" style={{ fontSize: `${settings.translationFontSize}px` }}>
+                  <p className="text-[var(--text-soft)] uppercase tracking-[0.08em] text-xs">Saheeh International</p>
+                  <p className="mt-2 text-[var(--text-muted)]" style={{ fontSize: `${settings.translationFontSize}px` }}>
                     {item.ayah.translation?.text}
                   </p>
                 </div>
@@ -406,7 +417,7 @@ export default function Render({ mode, id, settings, bookmarks, onToggleBookmark
               {tafsir?.open ? (
                 <div className="mt-6 rounded-xl border border-[#243543] bg-[#0b131b] p-4">
                   <p className="text-sm text-[#95a5b8] mb-2">Tafsir (Ibn Kathir)</p>
-                  {tafsir.loading ? <p className="text-[#6f7783] text-sm">Loading tafsir...</p> : null}
+                  {tafsir.loading ? <p className="text-[var(--text-soft)] text-sm">Loading tafsir...</p> : null}
                   {tafsir.error ? <p className="text-[#d28a8a] text-sm">{tafsir.error}</p> : null}
                   {tafsir.text ? (
                     <p className="text-[#d3dae2] leading-7 text-sm">{tafsir.text}</p>
@@ -417,6 +428,9 @@ export default function Render({ mode, id, settings, bookmarks, onToggleBookmark
           </article>
         );
       })}
+      {filteredData.length === 0 ? (
+        <div className="px-8 py-12 text-[var(--text-soft)]">No result found for this search.</div>
+      ) : null}
     </main>
   );
 }

@@ -1,9 +1,31 @@
 @import "tailwindcss";
 
-/* :root {
+:root,
+html[data-theme="dark"] {
   --bg: #0d0d0d;
   --fg: #e7ebf0;
-} */
+  --panel: #0d0d0d;
+  --border-soft: #1f222a;
+  --text-muted: #aeb7c4;
+  --text-soft: #7f8895;
+  --card-bg: #111510;
+  --input-bg: #171717;
+  --chip-bg: #090b10;
+  --icon-muted: #5c6470;
+}
+
+html[data-theme="light"] {
+  --bg: #eef2f7;
+  --fg: #111827;
+  --panel: #ffffff;
+  --border-soft: #d5dde8;
+  --text-muted: #334155;
+  --text-soft: #64748b;
+  --card-bg: #f8fafc;
+  --input-bg: #f1f5f9;
+  --chip-bg: #ffffff;
+  --icon-muted: #64748b;
+}
 
 body {
   background: var(--bg);

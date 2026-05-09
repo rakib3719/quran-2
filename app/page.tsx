@@ -5,11 +5,13 @@ import Render from "./components/layout/Render";
 import SidebarLeft from "./components/layout/SidebarLeft";
 import SidebarRight from "./components/layout/SidebarRight";
 import ReadingSettings from "./components/settings/ReadingSettings";
-import { BookmarkItem, ReadingSettingsState, ReaderMode } from "@/types/reader";
+import { AppView, BookmarkItem, ReadingSettingsState, ReaderMode } from "@/types/reader";
 import Topbar from "./components/layout/Topbar";
+import BookmarkPage from "./components/bookmark/BookmarkPage";
 
 const SETTINGS_KEY = "quran-reading-settings";
 const BOOKMARK_KEY = "quran-bookmarks";
+const THEME_KEY = "quran-theme";
 
 const defaultSettings: ReadingSettingsState = {
   contentMode: "translation",
@@ -19,8 +21,14 @@ const defaultSettings: ReadingSettingsState = {
 };
 
 export default function Home() {
+  const [view, setView] = useState<AppView>("reader");
   const [mode, setMode] = useState<ReaderMode>("surah");
   const [id, setId] = useState(1);
+  const [query, setQuery] = useState("");
+  const [theme, setTheme] = useState<"dark" | "light">(() => {
+    if (typeof window === "undefined") return "dark";
+    return (window.localStorage.getItem(THEME_KEY) as "dark" | "light") ?? "dark";
+  });
   const [settings, setSettings] = useState<ReadingSettingsState>(() => {
     if (typeof window === "undefined") return defaultSettings;
     try {
@@ -50,9 +58,22 @@ export default function Home() {
     localStorage.setItem(BOOKMARK_KEY, JSON.stringify(bookmarks));
   }, [bookmarks]);
 
+  useEffect(() => {
+    localStorage.setItem(THEME_KEY, theme);
+    document.documentElement.dataset.theme = theme;
+  }, [theme]);
+
   const onModeChange = (nextMode: ReaderMode, nextId: number) => {
+    setView("reader");
     setMode(nextMode);
     setId(nextId);
+  };
+
+  const onOpenAyah = (surahNumber: number, ayahNumberInSurah: number) => {
+    setView("reader");
+    setMode("surah");
+    setId(surahNumber);
+    window.location.hash = `${ayahNumberInSurah}`;
   };
 
   const onToggleBookmark = ({
@@ -82,24 +103,32 @@ export default function Home() {
   return (
 <div className="flex">
 
-  <SidebarLeft/>
-      <div className="h-screen bg-[#0d0d0d] text-white flex flex-col overflow-hidden">
+  <SidebarLeft activeView={view} onNavigate={setView} />
+      <div className="h-screen bg-[var(--bg)] text-[var(--fg)] flex flex-col overflow-hidden">
       {/* Top: full-width topbar */}
-      <Topbar />
+      <Topbar
+        onThemeToggle={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
+        onSearchClick={() => setView("reader")}
+      />
 
       {/* Bottom: sidebar + content row */}
       <div className="flex flex-1 overflow-hidden">
   
 
-        <SidebarRight mode={mode} selectedId={id} onModeChange={onModeChange} />
+        <SidebarRight mode={mode} selectedId={id} onModeChange={onModeChange} query={query} onQueryChange={setQuery} />
 
-        <Render
-          mode={mode}
-          id={id}
-          settings={settings}
-          bookmarks={bookmarks}
-          onToggleBookmark={onToggleBookmark}
-        />
+        {view === "bookmark" ? (
+          <BookmarkPage bookmarks={bookmarks} onOpenAyah={onOpenAyah} />
+        ) : (
+          <Render
+            mode={mode}
+            id={id}
+            query={query}
+            settings={settings}
+            bookmarks={bookmarks}
+            onToggleBookmark={onToggleBookmark}
+          />
+        )}
 
         <ReadingSettings settings={settings} onChange={setSettings} />
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import quran from "@/data/quran.json";
 import { Surah } from "@/types/quran";
 import { ReaderMode } from "@/types/reader";
@@ -9,6 +9,8 @@ type Props = {
   mode: ReaderMode;
   selectedId: number;
   onModeChange: (mode: ReaderMode, id: number) => void;
+  query: string;
+  onQueryChange: (value: string) => void;
 };
 
 const surahs = quran as Surah[];
@@ -31,8 +33,16 @@ export default function SidebarRight({
   mode,
   selectedId,
   onModeChange,
+  query,
+  onQueryChange,
 }: Props) {
-  const [query, setQuery] = useState("");
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    const handler = () => inputRef.current?.focus();
+    window.addEventListener("focus-reader-search", handler as EventListener);
+    return () => window.removeEventListener("focus-reader-search", handler as EventListener);
+  }, []);
 
   const filteredSurahs = useMemo(() => {
     const term = query.trim().toLowerCase();
@@ -57,9 +67,11 @@ export default function SidebarRight({
 
     if (!term) return juzSummary;
 
-    return juzSummary.filter((item) =>
-      `juz ${item.juz}`.includes(term)
-    );
+    return juzSummary.filter((item) => {
+      const firstName = item.first?.englishName ?? "";
+      const translation = item.first?.englishNameTranslation ?? "";
+      return `${item.juz} juz para ${firstName} ${translation}`.toLowerCase().includes(term);
+    });
   }, [query]);
 
   const filteredPages = useMemo(() => {
@@ -78,9 +90,9 @@ export default function SidebarRight({
         w-full md:w-[335px]
         h-screen
         shrink-0
-        border-r border-[#1f222a]
-        bg-[#0d0d0d]
-        text-white
+        border-r border-[var(--border-soft)]
+        bg-[var(--panel)]
+        text-[var(--fg)]
         flex flex-col
       "
     >
@@ -97,15 +109,15 @@ export default function SidebarRight({
         </div> */}
 
         <div className="p-5 pb-4">
-          <div className="bg-[#171717] rounded-full p-1 grid grid-cols-3 gap-1 text-sm mb-4">
+          <div className="bg-[var(--input-bg)] rounded-full p-1 grid grid-cols-3 gap-1 text-sm mb-4">
             {(["surah", "juz", "page"] as ReaderMode[]).map((item) => (
               <button
                 key={item}
                 onClick={() => onModeChange(item, 1)}
                 className={`h-10 rounded-full capitalize transition-colors ${
                   mode === item
-                    ? "bg-[#090b10] text-white"
-                    : "text-[#8a9099]"
+                    ? "bg-[var(--chip-bg)] text-[var(--fg)]"
+                    : "text-[var(--text-soft)]"
                 }`}
               >
                 {item}
@@ -114,10 +126,11 @@ export default function SidebarRight({
           </div>
 
           <input
+            ref={inputRef}
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => onQueryChange(e.target.value)}
             placeholder={`Search ${mode}`}
-            className="w-full h-12 rounded-full bg-[#171717] border border-[#262b33] px-4 text-[#d5d9df] placeholder:text-[#666d76] outline-none"
+            className="w-full h-12 rounded-full bg-[var(--input-bg)] border border-[var(--border-soft)] px-4 text-[var(--fg)] placeholder:text-[var(--text-soft)] outline-none"
           />
         </div>
       </div>
@@ -144,8 +157,8 @@ export default function SidebarRight({
               onClick={() => onModeChange("surah", surah.number)}
               className={`w-full  text-left rounded-2xl border p-4 transition-colors ${
                 selectedId === surah.number
-                  ? "bg-[#111510] border-[#1f341c]"
-                  : "bg-[#0d0d0d] border-[#1f341c] hover:border-[#35563f] hover:bg-[#111510]"
+                  ? "bg-[var(--card-bg)] border-[#1f341c]"
+                  : "bg-[var(--panel)] border-[#1f341c] hover:border-[#35563f] hover:bg-[var(--card-bg)]"
               }`}
             >
 
@@ -167,7 +180,7 @@ export default function SidebarRight({
                     {surah.englishName.replace("-", " ")}
                   </p>
 
-                  <p className="text-[#7d8490] text-[13px]">
+                  <p className="text-[var(--text-soft)] text-[13px]">
                     {surah.englishNameTranslation}
                   </p>
                  </div>
@@ -187,8 +200,8 @@ export default function SidebarRight({
       onClick={() => onModeChange("juz", item.juz)}
       className={`w-full text-left rounded-2xl border p-4 transition-colors ${
         selectedId === item.juz
-          ? "bg-[#111510] border-[#1f341c]"
-          : "bg-[#0d0d0d] border-[#1f341c] hover:border-[#35563f] hover:bg-[#111510]"
+          ? "bg-[var(--card-bg)] border-[#1f341c]"
+          : "bg-[var(--panel)] border-[#1f341c] hover:border-[#35563f] hover:bg-[var(--card-bg)]"
       }`}
     >
       <section className="flex items-center gap-4">
@@ -207,7 +220,7 @@ export default function SidebarRight({
             Juz {item.juz}
           </p>
 
-          <p className="text-[#7d8490] text-[13px]">
+          <p className="text-[var(--text-soft)] text-[13px]">
             {item.first?.englishName ?? "Surah"} & More
           </p>
         </div>
@@ -223,8 +236,8 @@ export default function SidebarRight({
       onClick={() => onModeChange("page", pageNumber)}
       className={`w-full text-left rounded-2xl border p-4 transition-colors ${
         selectedId === pageNumber
-          ? "bg-[#111510] border-[#1f341c]"
-          : "bg-[#0d0d0d] border-[#1f341c] hover:border-[#35563f] hover:bg-[#111510]"
+          ? "bg-[var(--card-bg)] border-[#1f341c]"
+          : "bg-[var(--panel)] border-[#1f341c] hover:border-[#35563f] hover:bg-[var(--card-bg)]"
       }`}
     >
       <section className="flex items-center gap-4">
@@ -243,7 +256,7 @@ export default function SidebarRight({
             Page {String(pageNumber).padStart(2, "0")}
           </p>
 
-          <p className="text-[#7d8490] text-[13px]">
+          <p className="text-[var(--text-soft)] text-[13px]">
             Quran Page Navigation
           </p>
         </div>

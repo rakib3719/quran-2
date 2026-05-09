@@ -1,4 +1,5 @@
 export type ReaderMode = "surah" | "juz" | "page";
+export type AppView = "reader" | "bookmark";
 
 export type ContentMode = "translation" | "reading";
 

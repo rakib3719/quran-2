@@ -12,10 +12,10 @@ export default function ReadingSettings({
   onChange,
 }: Props) {
   return (
-    <aside className="hidden xl:flex w-[360px] shrink-0 border-l border-[#1f341c] bg-[#0d0d0d] text-white flex-col">
+    <aside className="hidden xl:flex w-[360px] shrink-0 border-l border-[#1f341c] bg-[var(--panel)] text-[var(--fg)] flex-col">
       {/* Top Tabs */}
       <div className="p-5 border-b border-[#1b221a] shrink-0">
-        <div className="bg-[#171717] rounded-full p-1 grid grid-cols-2 gap-1">
+        <div className="bg-[var(--input-bg)] rounded-full p-1 grid grid-cols-2 gap-1">
           <button
             onClick={() =>
               onChange({
@@ -25,8 +25,8 @@ export default function ReadingSettings({
             }
             className={`h-11 rounded-full text-[15px] font-medium transition-colors ${
               settings.contentMode === "translation"
-                ? "bg-[#090b10] text-white"
-                : "text-[#8a9099]"
+                ? "bg-[var(--chip-bg)] text-[var(--fg)]"
+                : "text-[var(--text-soft)]"
             }`}
           >
             Translation
@@ -41,8 +41,8 @@ export default function ReadingSettings({
             }
             className={`h-11 rounded-full text-[15px] font-medium transition-colors ${
               settings.contentMode === "reading"
-                ? "bg-[#090b10] text-white"
-                : "text-[#8a9099]"
+                ? "bg-[var(--chip-bg)] text-[var(--fg)]"
+                : "text-[var(--text-soft)]"
             }`}
           >
             Reading
@@ -65,17 +65,17 @@ export default function ReadingSettings({
       >
         {/* Heading */}
         <div>
-          <p className="text-[28px] font-bold text-[#e5e7eb]">
+          <p className="text-[28px] font-bold text-[var(--fg)]">
             Reading Settings
           </p>
 
-          <p className="text-[#7d8490] text-[14px] mt-1">
+          <p className="text-[var(--text-soft)] text-[14px] mt-1">
             Customize your Quran reading experience
           </p>
         </div>
 
         {/* Font Settings Card */}
-        <div className="rounded-2xl border border-[#1f341c] bg-[#111510] p-5">
+        <div className="rounded-2xl border border-[#1f341c] bg-[var(--card-bg)] p-5">
           <p className="text-[#4fa84f] text-[18px] font-semibold mb-5">
             Font Settings
           </p>
@@ -83,7 +83,7 @@ export default function ReadingSettings({
           {/* Arabic Font Size */}
           <div className="mb-6">
             <div className="flex items-center justify-between mb-3">
-              <p className="text-[15px] font-medium text-[#d5d9df]">
+              <p className="text-[15px] font-medium text-[var(--text-muted)]">
                 Arabic Font Size
               </p>
 
@@ -110,7 +110,7 @@ export default function ReadingSettings({
           {/* Translation Font Size */}
           <div className="mb-6">
             <div className="flex items-center justify-between mb-3">
-              <p className="text-[15px] font-medium text-[#d5d9df]">
+              <p className="text-[15px] font-medium text-[var(--text-muted)]">
                 Translation Font Size
               </p>
 
@@ -136,7 +136,7 @@ export default function ReadingSettings({
 
           {/* Font Face */}
           <div>
-            <p className="text-[15px] font-medium text-[#d5d9df] mb-3">
+            <p className="text-[15px] font-medium text-[var(--text-muted)] mb-3">
               Arabic Font Face
             </p>
 
@@ -153,11 +153,11 @@ export default function ReadingSettings({
                 w-full
                 h-12
                 rounded-xl
-                bg-[#161a20]
-                border border-[#252a32]
+                bg-[var(--input-bg)]
+                border border-[var(--border-soft)]
                 px-4
                 text-[15px]
-                text-white
+                text-[var(--fg)]
                 outline-none
               "
             >
@@ -171,12 +171,12 @@ export default function ReadingSettings({
         </div>
 
         {/* Support Card */}
-        <div className="rounded-2xl border border-[#1f341c] bg-[#111510] p-5">
-          <p className="text-[22px] leading-snug font-bold text-white">
+        <div className="rounded-2xl border border-[#1f341c] bg-[var(--card-bg)] p-5">
+          <p className="text-[22px] leading-snug font-bold text-[var(--fg)]">
             Help spread the knowledge of Islam
           </p>
 
-          <p className="text-[#8f96a3] text-[14px] mt-3 leading-6">
+          <p className="text-[var(--text-soft)] text-[14px] mt-3 leading-6">
             Your support helps us improve Quran learning
             for المسلمين around the world.
           </p>
